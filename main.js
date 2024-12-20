@@ -5,23 +5,29 @@ import { defineControls } from './controls.js';
 import './menus/level.js';
 
 const infoField = document.querySelector('.info-field');
+const highScoreField = document.querySelector('.high-score-field'); // Поле для рекорду
 const gameField = document.querySelector('.game-field');
 const settings = {
   speed: 5,
   map: defaultMaps[0],
   gameIntervalID: 0,
   paused: false,
+  highScore: 0, // Рекорд
 };
 const gameRender = new GameRender(gameField);
 let snake;
+
+// Завантаження звуків
+const appleSound = new Audio('./sounds/apple-eat.mp3');
+const gameOverSound = new Audio('./sounds/game-over.mp3');
 
 addEventListener('endGame', endGame);
 window.addEventListener('resize', () => document.location.reload());
 document.querySelector('#start-game').addEventListener('click', startGame);
 document.querySelector('.field').addEventListener('click', pauseGame);
 document.querySelector('#continue-game').addEventListener('click', continueGame);
-document.addEventListener('collision', endGame);
-document.addEventListener('appleEaten', increaseScore);
+document.addEventListener('collision', handleGameOver);
+document.addEventListener('appleEaten', handleAppleEaten);
 infoField.style.width = `${gameRender.gameFieldWidth + 6}px`;
 gameField.addEventListener('click', e => e.stopPropagation());
 gameField.setAttribute('width', `${gameRender.gameFieldWidth}`);
@@ -56,8 +62,27 @@ function continueGame() {
 function endGame() {
   settings.paused = false;
   clearInterval(settings.intervalID);
+  
+  const currentScore = parseInt(infoField.textContent);
+  if (currentScore > settings.highScore) {
+    settings.highScore = currentScore;
+    highScoreField.textContent = ` ${settings.highScore}`;
+  }
   switchToElement('menu');
+  
   infoField.textContent = '0';
+}
+
+function handleGameOver() {
+  // Програвання звуку проіграшу
+  gameOverSound.play();
+  endGame();
+}
+
+function handleAppleEaten() {
+  // Програвання звуку
+  appleSound.play();
+  increaseScore();
 }
 
 function increaseScore() {

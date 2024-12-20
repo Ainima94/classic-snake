@@ -3,7 +3,7 @@ class GameMap {
   device;
   #snakeSpawnProperties = {
     pos: { x: 0.5, y: 0.5 },
-    direction: GameMap.directions.right,
+    direction: GameMap.directions.up,
   };
   boundaries = [];
   #gameWidth;
@@ -68,7 +68,7 @@ class GameMap {
       },
     };
     directions.right.opposite = directions.left;
-    directions.right.angle = 0;
+    directions.right.angle = 0 ;
     directions.down.opposite = directions.up;
     directions.down.angle = 90;
     directions.left.opposite = directions.right;

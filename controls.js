@@ -9,15 +9,19 @@ function controls(snake, e) {
   if (!e) e = { key: checkDirection() };
   switch (e.key) {
   case 'ArrowUp':
+  case 'w':
     snake.changeDirection(GameMap.directions.up);
     break;
   case 'ArrowDown':
+  case 's':
     snake.changeDirection(GameMap.directions.down);
     break;
   case 'ArrowLeft':
+  case 'a':
     snake.changeDirection(GameMap.directions.left);
     break;
   case 'ArrowRight':
+  case 'd':
     snake.changeDirection(GameMap.directions.right);
     break;
   }
